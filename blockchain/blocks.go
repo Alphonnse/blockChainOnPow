@@ -1,29 +1,51 @@
 package blocks
 
+import (
+	"time"
+
+	"github.com/cbergoon/merkletree"
+)
+
+// Its the base block and all stuff works good with it
+// type Block struct {
+// 	Hash     []byte
+// 	Data     []byte
+// 	PrevHash []byte
+// 	Nonce    int
+// }
+
+type Tx struct {
+	InputVal  float64
+	OutputVal float64
+	TxTime    time.Time
+}
+
+// type MarkelTree struct {
+// 	Hash  []byte
+// 	Left  *MarkelTree
+// 	Right *MarkelTree
+// }
+
+type BlockHeader struct {
+	PrevHash   []byte
+	TimeStamp  time.Time
+	Nonce      int
+	Difficulty int
+	MarkelRoot merkletree.MerkleTree
+}
+
+type BlockBody struct {
+	Txs [2048]*Tx
+}
+
 type Block struct {
-	Hash     []byte
-	Data     []byte
-	PrevHash []byte
-	Nonce    int
+	Header BlockHeader
+	Body   BlockBody
 }
 
 type BlockChain struct {
 	Blocks []*Block
 }
-
-// func (b *Block) DeriveHash() {
-// 	info := bytes.Join([][]byte{b.Data, b.PrevHash}, []byte{})
-//
-// 	hash := sha256.Sum256(info)
-//
-// 	b.Hash = hash[:]
-// }
-
-// func CreateBlock(data string, prevHash []byte) *Block {
-// 	block := &Block{[]byte{}, []byte(data), prevHash}
-// 	block.DeriveHash()
-// 	return block
-// }
 
 func CreateBlock(data string, prevHash []byte) *Block {
 	block := &Block{[]byte{}, []byte(data), prevHash, 0}
